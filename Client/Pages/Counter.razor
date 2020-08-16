@@ -1,0 +1,30 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="SeyHelloTo_gRPC">Sey Hello World</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+    private void SeyHelloTo_gRPC()
+    {
+        Greeter();
+    }
+    public static async Task Greeter()
+    {
+        using var channel = GrpcChannel.ForAddress("https://192.168.178.26:5001");
+        var client = new Greeter.GreeterClient(channel);
+        var reply = await client.SayHelloAsync(
+                          new HelloRequest { Name = "GreeterClient" });
+        Console.WriteLine("Greeting: " + reply.Message);
+        Console.WriteLine("Press any key to exit...");
+    }
+}
