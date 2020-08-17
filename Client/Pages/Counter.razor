@@ -1,15 +1,17 @@
 ﻿@page "/counter"
 @using Grpc.Net.Client.Web
-
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <button class="btn btn-primary" @onclick="SeyHelloTo_gRPC">Sey Hello World</button>
+<p><b>@serverReply</b></p>
 
 @code {
-    private int currentCount = 0;
+    private static int currentCount = 0;
+    private static string serverReply;
 
     private void IncrementCount()
     {
@@ -27,8 +29,7 @@
         });
         var client = new Greet.Greeter.GreeterClient(channel);
         var reply = await client.SayHelloAsync(
-                          new Greet.HelloRequest { Name = "GreeterClient" });
-        Console.WriteLine("Greeting: " + reply.Message);
-        Console.WriteLine("Press any key to exit...");
+                          new Greet.HelloRequest { Name = currentCount.ToString() });
+        serverReply = reply.Message;
     }
 }
