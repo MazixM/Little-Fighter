@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  mongodb_container:
+  mongodb:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
@@ -9,6 +9,13 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data:/data/db
+  keycloak:
+    image: quay.io/keycloak/keycloak:11.0.0
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
 
 volumes:
   mongodb_data:
