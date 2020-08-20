@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace Server
 {
@@ -14,7 +15,7 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-
+            //IdentityModelEventSource.ShowPII = true;
             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -30,8 +31,9 @@ namespace Server
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:8000/auth/realms/LittleFighter";
-                    options.Audience = "Web";
+                    options.Authority = "http://localhost:8080/auth/realms/Keycloak/";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "account";
                 });
 
             services.AddAuthorization();
