@@ -11,9 +11,12 @@ services:
       - mongodb_data:/data/db
   keycloak:
     image: quay.io/keycloak/keycloak:11.0.0
+    volumes:
+      - ./keycloak/realm.json:/tmp/realm.json
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/realm.json
     ports:
       - 8080:8080
 
