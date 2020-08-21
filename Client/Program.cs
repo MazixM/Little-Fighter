@@ -1,11 +1,12 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Greet;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
+using System.Threading.Tasks;
+
 
 namespace Client
 {
@@ -15,17 +16,17 @@ namespace Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-            
+
             builder.Services.AddScoped<GrpcAuthorizationMessageHandler>();
 
             builder.Services.AddScoped(sp =>
             {
-                var authorizationMessageHandler = 
+                var authorizationMessageHandler =
                     sp.GetRequiredService<GrpcAuthorizationMessageHandler>();
                 authorizationMessageHandler.InnerHandler = new HttpClientHandler();
-                var grpcWebHandler = 
+                var grpcWebHandler =
                     new GrpcWebHandler(GrpcWebMode.GrpcWeb, authorizationMessageHandler);
-                var channel = GrpcChannel.ForAddress("https://localhost:5001", 
+                var channel = GrpcChannel.ForAddress("https://localhost:5001",
                     new GrpcChannelOptions { HttpHandler = grpcWebHandler });
 
                 return new Greeter.GreeterClient(channel);
@@ -34,7 +35,6 @@ namespace Client
             builder.Services.AddOidcAuthentication(options =>
             {
                 builder.Configuration.Bind("Local", options.ProviderOptions);
-                options.ProviderOptions.ResponseType = "code";
             });
             await builder.Build().RunAsync();
         }

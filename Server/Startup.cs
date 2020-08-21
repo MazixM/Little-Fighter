@@ -31,7 +31,7 @@ namespace Server
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "http://localhost:8080/auth/realms/Keycloak/";
+                    options.Authority = "http://localhost:8080/auth/realms/LittleFighter/";
                     options.RequireHttpsMetadata = false;
                     options.Audience = "account";
                 });
