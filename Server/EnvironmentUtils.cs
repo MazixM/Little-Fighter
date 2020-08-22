@@ -1,14 +1,12 @@
 ﻿using System;
 
-namespace Shared
+namespace Server
 {
     public static class EnvironmentUtils
     {
         public static string GetEnvironmentVariable(string variableName, string defaultValue)
         {
-            string value = Environment.GetEnvironmentVariable(variableName);
-
-            return value != null ? value : defaultValue;
+            return Environment.GetEnvironmentVariable(variableName) ?? defaultValue;
         }
     }
 }

@@ -4,18 +4,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
+using MongoDB.Driver;
+using Server.Services;
+using Server.Services.Dao;
 
 namespace Server
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            //IdentityModelEventSource.ShowPII = true;
             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -37,9 +36,12 @@ namespace Server
                 });
 
             services.AddAuthorization();
+
+            services.AddSingleton(getMongoDatabase());
+            services.AddSingleton<BookDao>();
+            services.AddSingleton<BookService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -65,6 +67,25 @@ namespace Server
                             "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                     });
             });
+        }
+
+        private IMongoDatabase getMongoDatabase()
+        {
+            string host = EnvironmentUtils.GetEnvironmentVariable("MONGODB_HOST", "localhost");
+            string port = EnvironmentUtils.GetEnvironmentVariable("MONGODB_PORT", "27017");
+            string database = EnvironmentUtils.GetEnvironmentVariable("MONGODB_DATABASE", "default");
+            string username = EnvironmentUtils.GetEnvironmentVariable("MONGODB_AUTHENTICATION_USERNAME", "mongo");
+            string password = EnvironmentUtils.GetEnvironmentVariable("MONGODB_AUTHENTICATION_PASSWORD", "mongo");
+            string authenticationDatabase = EnvironmentUtils.GetEnvironmentVariable("MONGODB_AUTHENTICATION_DATABASE", "admin");
+
+            var settings = new MongoClientSettings
+            {
+                Server = new MongoServerAddress(host, int.Parse(port)),
+                Credential = MongoCredential.CreateCredential(authenticationDatabase, username, password)
+            };
+            var mongoClient = new MongoClient(settings);
+
+            return mongoClient.GetDatabase(database);
         }
     }
 }

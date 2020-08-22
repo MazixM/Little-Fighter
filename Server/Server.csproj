@@ -10,6 +10,7 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.31.0" />
     <PackageReference Include="Grpc.AspNetCore.Web" Version="2.31.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
