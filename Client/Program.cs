@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static Greet.Greeter;
 using static PlayerManager.PlayerManager;
 
 namespace Client
@@ -20,29 +19,18 @@ namespace Client
             builder.Services.AddScoped<GrpcAuthorizationMessageHandler>();
 
             builder.Services.AddScoped(sp =>
-            {
-                var authorizationMessageHandler =
-                    sp.GetRequiredService<GrpcAuthorizationMessageHandler>();
-                authorizationMessageHandler.InnerHandler = new HttpClientHandler();
-                var grpcWebHandler =
-                    new GrpcWebHandler(GrpcWebMode.GrpcWeb, authorizationMessageHandler);
-                var channel = GrpcChannel.ForAddress("https://localhost:5001",
-                    new GrpcChannelOptions { HttpHandler = grpcWebHandler });
+          {
 
-                return new GreeterClient(channel);
-            });
-            builder.Services.AddScoped(sp =>
-            {
-                var authorizationMessageHandler =
-                    sp.GetRequiredService<GrpcAuthorizationMessageHandler>();
-                authorizationMessageHandler.InnerHandler = new HttpClientHandler();
-                var grpcWebHandler =
-                    new GrpcWebHandler(GrpcWebMode.GrpcWeb, authorizationMessageHandler);
-                var channel = GrpcChannel.ForAddress("https://localhost:5001",
-                    new GrpcChannelOptions { HttpHandler = grpcWebHandler });
+              var authorizationMessageHandler =
+                  sp.GetRequiredService<GrpcAuthorizationMessageHandler>();
+              authorizationMessageHandler.InnerHandler = new HttpClientHandler();
+              var grpcWebHandler =
+                  new GrpcWebHandler(GrpcWebMode.GrpcWeb, authorizationMessageHandler);
+              var channel = GrpcChannel.ForAddress("https://localhost:5001",
+                  new GrpcChannelOptions { HttpHandler = grpcWebHandler });
 
-                return new PlayerManagerClient(channel);
-            });
+              return new PlayerManagerClient(channel);
+          });
 
             builder.Services.AddOidcAuthentication(options =>
             {

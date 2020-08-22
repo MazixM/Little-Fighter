@@ -9,10 +9,8 @@ service PlayerManager {
 
 message CreateRequest {
 	string nick = 1;
-	string username = 2;
 }
 
 message CreateReply {
   string status = 1;
-  bool error = 2;
 }

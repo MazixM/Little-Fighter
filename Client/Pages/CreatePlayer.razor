@@ -11,23 +11,45 @@
 </AuthorizeView>
 
 <br />
-<input type="text" value="nick-todo" /><br/>
-<button class="btn btn-primary" @onclick="CreatePlayerTask">Utwórz</button>
 <p>
-    <b>@serverReply</b>
+    <b style="color:red">@errorMessage</b>
+</p>
+<br />
+<input @bind="nick" type="text" placeholder="Podaj nick" autofocus/><br/>
+<button class="btn btn-primary" @onclick="TryCreatePlayer">Utwórz</button>
+<p>
+    <b>@serverMessage</b>
 </p>
 
 @code {
-    private static string serverReply;
+    private static string serverMessage;
+    private static string errorMessage;
     private static string username;
-    private async Task CreatePlayerTask()
+    private static string nick;
+
+    private async Task TryCreatePlayer()
     {
-        await CreatePlayerAsync();
+        if(nick!=null && nick.Length >= 4 && nick.Length <= 20)
+        {
+            serverMessage = "";
+            errorMessage = "";
+            await CreatePlayerAsync();
+        }else
+        {
+            serverMessage = "";
+            errorMessage = "Podaj nick [4-20]";
+        }
     }
 
     public async Task CreatePlayerAsync()
     {
-        var reply = await PlayerManagerClient.CreatePlayerAsync(new PlayerManager.CreateRequest { Nick = "Nick", Username = username });
-        serverReply = reply.Status;
+        var reply = await PlayerManagerClient.CreatePlayerAsync(new PlayerManager.CreateRequest { Nick = nick });
+        if(reply.Status=="ok")
+        {
+            serverMessage = "Postać została uworzona.";
+        }else
+        {
+            serverMessage = "Podany nick już istnieje spróbuj inny.";
+        }
     }
 }

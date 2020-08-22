@@ -12,12 +12,11 @@ namespace Server.Services
             _playerDao = playerDao;
         }
 
-        public Player CreatePlayer(string nick, string username)
+        public Player CreatePlayer(string nick)
         {
             Player player = new Player
             {
-                Nick = nick,
-                Username = username
+                Nick = nick
             };
 
             return _playerDao.Insert(player);

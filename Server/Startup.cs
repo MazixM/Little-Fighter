@@ -30,16 +30,14 @@ namespace Server
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "http://localhost:8080/auth/realms/LittleFighter/";
+                    options.Authority = EnvironmentUtils.GetEnvironmentVariable("JWT_AUTHORITY", "http://localhost:8080/auth/realms/LittleFighter/");
+                    options.Audience = EnvironmentUtils.GetEnvironmentVariable("JWT_AUDIENCE", "account");
                     options.RequireHttpsMetadata = false;
-                    options.Audience = "account";
                 });
 
             services.AddAuthorization();
 
             services.AddSingleton(getMongoDatabase());
-            services.AddSingleton<BookDao>();
-            services.AddSingleton<BookService>();
             services.AddSingleton<PlayerDao>();
             services.AddSingleton<PlayerService>();
         }
@@ -60,15 +58,7 @@ namespace Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>().RequireCors("AllowAll");
                 endpoints.MapGrpcService<PlayerManagerService>().RequireCors("AllowAll");
-
-                endpoints.MapGet("/",
-                    async context =>
-                    {
-                        await context.Response.WriteAsync(
-                            "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                    });
             });
         }
 

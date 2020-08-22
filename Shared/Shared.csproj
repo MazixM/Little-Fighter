@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\playerManager.proto" />
-    <Protobuf Include="Protos\greet.proto" />
   </ItemGroup>
 
 </Project>

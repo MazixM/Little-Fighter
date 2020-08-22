@@ -21,12 +21,11 @@ namespace Server.Services
         
         public override Task<CreateReply> CreatePlayer(CreateRequest request, ServerCallContext context)
         {
-            Player player = _playerService.CreatePlayer(request.Nick, request.Username);
+            Player player = _playerService.CreatePlayer(request.Nick);
             return Task.FromResult(new CreateReply
             {
-                Status = "ok",
-                Error = false
-            }); ;
+                Status = "ok"
+            });
         }
     }
 }
