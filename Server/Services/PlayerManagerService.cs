@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using PlayerManager;
-using Server.Services.Model;
 using System.Threading.Tasks;
 
 namespace Server.Services
 {
     [Authorize]
-    public class PlayerManagerService:PlayerManager.PlayerManager.PlayerManagerBase
+    public class PlayerManagerService : PlayerManager.PlayerManager.PlayerManagerBase
     {
         private readonly ILogger<PlayerManagerService> _logger;
         private readonly PlayerService _playerService;
@@ -18,13 +17,23 @@ namespace Server.Services
             _logger = logger;
             _playerService = playerService;
         }
-        
+
         public override Task<CreateReply> CreatePlayer(CreateRequest request, ServerCallContext context)
         {
-            Player player = _playerService.CreatePlayer(request.Nick);
+            string status;
+            if (_playerService.IsNickAvailable(request.Nick))
+            {
+                _playerService.CreatePlayer(request.Nick);
+                status = "ok";
+            }
+            else
+            {
+                status = "exist";
+            }
+
             return Task.FromResult(new CreateReply
             {
-                Status = "ok"
+                Status = status ?? "error"
             });
         }
     }

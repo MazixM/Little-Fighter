@@ -21,5 +21,9 @@ namespace Server.Services
 
             return _playerDao.Insert(player);
         }
+        public bool IsNickAvailable(string nick)
+        {
+            return _playerDao.IsNickAvailable(nick);
+        }
     }
 }

@@ -10,5 +10,10 @@ namespace Server.Services.Dao
         }
 
         protected override string CollectionName => "player";
+
+        public bool IsNickAvailable(string nick)
+        {
+            return GetCollection().Find(player => player.Nick == nick).Project(player => player.Id).FirstOrDefault() == null;
+        }
     }
 }
