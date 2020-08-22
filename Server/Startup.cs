@@ -40,6 +40,8 @@ namespace Server
             services.AddSingleton(getMongoDatabase());
             services.AddSingleton<BookDao>();
             services.AddSingleton<BookService>();
+            services.AddSingleton<PlayerDao>();
+            services.AddSingleton<PlayerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +61,7 @@ namespace Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<GreeterService>().RequireCors("AllowAll");
+                endpoints.MapGrpcService<PlayerManagerService>().RequireCors("AllowAll");
 
                 endpoints.MapGet("/",
                     async context =>

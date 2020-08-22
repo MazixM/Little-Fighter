@@ -6,7 +6,15 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="http://localhost:8080/auth/realms/LittleFighter/web/" class="ml-md-auto">Log in / Register</a>
+        <AuthorizeView>
+            <Authorized>
+                Witaj, @context.User.Identity.Name!
+                <a href="authentication/logout" class="ml-md-auto">Wyloguj</a>
+            </Authorized>
+            <NotAuthorized>
+                <a href="authentication/login">Zaloguj / Zarejestruj</a>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 
     <div class="content px-4">

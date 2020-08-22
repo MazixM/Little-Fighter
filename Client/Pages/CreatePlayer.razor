@@ -1,0 +1,33 @@
+﻿@page "/createPlayer"
+@using Microsoft.AspNetCore.Authorization
+@inject PlayerManager.PlayerManager.PlayerManagerClient PlayerManagerClient
+@attribute [Authorize]
+<AuthorizeView>
+    <Authorized>
+    @{
+        username = @context.User.Identity.Name;
+    }
+    </Authorized>
+</AuthorizeView>
+
+<br />
+<input type="text" value="nick-todo" /><br/>
+<button class="btn btn-primary" @onclick="CreatePlayerTask">Utwórz</button>
+<p>
+    <b>@serverReply</b>
+</p>
+
+@code {
+    private static string serverReply;
+    private static string username;
+    private async Task CreatePlayerTask()
+    {
+        await CreatePlayerAsync();
+    }
+
+    public async Task CreatePlayerAsync()
+    {
+        var reply = await PlayerManagerClient.CreatePlayerAsync(new PlayerManager.CreateRequest { Nick = "Nick", Username = username });
+        serverReply = reply.Status;
+    }
+}

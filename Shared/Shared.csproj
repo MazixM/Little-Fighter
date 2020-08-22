@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\playerManager.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.13.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.31.0" />
     <PackageReference Include="Grpc.Tools" Version="2.31.0">
@@ -14,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\playerManager.proto" />
     <Protobuf Include="Protos\greet.proto" />
   </ItemGroup>
 

@@ -13,20 +13,21 @@ namespace Server
     {
         private readonly ILogger<GreeterService> _logger;
         private readonly BookService _bookService;
+        private readonly PlayerService _playerService;
 
-        public GreeterService(ILogger<GreeterService> logger, BookService bookService)
+        public GreeterService(ILogger<GreeterService> logger, BookService bookService,PlayerService playerService)
         {
             _logger = logger;
             _bookService = bookService;
+            _playerService = playerService;
         }
 
         public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
             Book book = _bookService.CreateBook("Pan Lodowego Ogrodu", "Jarosław Grzędowicz");
-            
             return Task.FromResult(new HelloReply
             {
-                Message = "Hello " + request.Name + " " + book
+                Message = "Dodano pomyślnie"
             });
         }
     }

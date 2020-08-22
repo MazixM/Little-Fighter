@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package playerManager;
+
+service PlayerManager {
+  rpc CreatePlayer (CreateRequest) returns (CreateReply);
+  //rpc DeletePlayer (CreateRequest) returns (Reply);
+}
+
+message CreateRequest {
+	string nick = 1;
+	string username = 2;
+}
+
+message CreateReply {
+  string status = 1;
+  bool error = 2;
+}
