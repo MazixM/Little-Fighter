@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
@@ -37,6 +36,8 @@ namespace Server
 
             services.AddAuthorization();
 
+            services.AddHttpContextAccessor();
+
             services.AddSingleton(getMongoDatabase());
             services.AddSingleton<PlayerDao>();
             services.AddSingleton<PlayerService>();
@@ -51,7 +52,7 @@ namespace Server
 
             app.UseRouting();
 
-            app.UseGrpcWeb(new GrpcWebOptions {DefaultEnabled = true});
+            app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
             app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();

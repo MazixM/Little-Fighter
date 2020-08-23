@@ -4,6 +4,7 @@ package playerManager;
 
 service PlayerManager {
   rpc CreatePlayer (CreateRequest) returns (CreateReply);
+  rpc CheckPlayer (CheckRequest) returns (CheckReply);
   //rpc DeletePlayer (CreateRequest) returns (Reply);
 }
 
@@ -13,4 +14,12 @@ message CreateRequest {
 
 message CreateReply {
   string status = 1;
+}
+
+message CheckRequest {
+}
+
+message CheckReply {
+	bool isUserHavePlayer = 1;
+	string nick = 2;
 }

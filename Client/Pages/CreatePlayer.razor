@@ -1,55 +1,76 @@
 ﻿@page "/createPlayer"
-@using Microsoft.AspNetCore.Authorization
+@using SolutionShared
 @inject PlayerManager.PlayerManager.PlayerManagerClient PlayerManagerClient
 @attribute [Authorize]
-<AuthorizeView>
-    <Authorized>
-    @{
-        username = @context.User.Identity.Name;
-    }
-    </Authorized>
-</AuthorizeView>
-
-<br />
-<p>
-    <b style="color:red">@errorMessage</b>
-</p>
-<br />
-<input @bind="nick" type="text" placeholder="Podaj nick" autofocus/><br/>
-<button class="btn btn-primary" @onclick="TryCreatePlayer">Utwórz</button>
-<p>
-    <b>@serverMessage</b>
-</p>
 
 @code {
     private static string serverMessage;
     private static string errorMessage;
-    private static string username;
     private static string nick;
+    private static bool isRegisterHidden = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckPlayerAsync();
+    }
 
     private async Task TryCreatePlayer()
     {
-        if(nick!=null && nick.Length >= 4 && nick.Length <= 20)
+        ClearText();
+        if (InputValidationCheck.Nick(nick))
         {
-            serverMessage = "";
-            errorMessage = "";
+
             await CreatePlayerAsync();
-        }else
+        }
+        else
         {
-            serverMessage = "";
             errorMessage = "Podaj nick [4-20]";
         }
     }
 
     public async Task CreatePlayerAsync()
     {
+        ClearText();
         var reply = await PlayerManagerClient.CreatePlayerAsync(new PlayerManager.CreateRequest { Nick = nick });
-        if(reply.Status=="ok")
+        if (reply.Status == "ok")
         {
             serverMessage = "Postać została uworzona.";
-        }else
+            isRegisterHidden = true;
+        }
+        else
         {
             serverMessage = "Podany nick już istnieje spróbuj inny.";
         }
     }
+
+    public async Task CheckPlayerAsync()
+    {
+        ClearText();
+        var reply = await PlayerManagerClient.CheckPlayerAsync(new PlayerManager.CheckRequest { });
+        if (reply.IsUserHavePlayer)
+        {
+            errorMessage = "Już posiadasz JEDNĄ postać o nick-u: " + reply.Nick;
+        }
+        else
+        {
+            isRegisterHidden = false;
+        }
+    }
+    private void ClearText()
+    {
+        serverMessage = "";
+        errorMessage = "";
+    }
 }
+<p>
+    <b style="color:red">@errorMessage</b>
+</p>
+<p>
+    <b>@serverMessage</b>
+</p>
+<br />
+<div id="createPlayer" hidden="@isRegisterHidden">
+    <input @bind="nick" type="text" placeholder="Podaj nick" autofocus />
+    <br />
+    <button class="btn btn-primary" @onclick="TryCreatePlayer">Utwórz</button>
+</div>

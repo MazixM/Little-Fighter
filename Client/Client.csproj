@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
-    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Shared\SolutionShared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,5 +15,14 @@ namespace Server.Services.Dao
         {
             return GetCollection().Find(player => player.Nick == nick).Project(player => player.Id).FirstOrDefault() == null;
         }
+        public bool IsUsernameExist(string username)
+        {
+            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault() == null;
+        }
+
+        public Player GetPlayer(string username)
+        {
+            return GetCollection().Find(player => player.Username == username).FirstOrDefault();
+        }
     }
 }
