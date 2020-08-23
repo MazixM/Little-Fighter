@@ -37,9 +37,12 @@
             serverMessage = "Postać została uworzona.";
             isRegisterHidden = true;
         }
-        else
+        else if (reply.Status == "nick_exist")
         {
             serverMessage = "Podany nick już istnieje spróbuj inny.";
+        }else
+        {
+            serverMessage = "Nieznany błąd.";
         }
     }
 
