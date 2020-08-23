@@ -17,7 +17,7 @@ namespace Server.Services.Dao
         }
         public bool IsUsernameExist(string username)
         {
-            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault() == null;
+            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault() != null;
         }
 
         public Player GetPlayer(string username)

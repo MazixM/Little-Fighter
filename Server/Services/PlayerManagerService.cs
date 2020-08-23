@@ -28,7 +28,7 @@ namespace Server.Services
             string username = _httpContextAccessor.HttpContext.User.FindFirst("preferred_username").Value;
             string status = null;
 
-            if (InputValidationCheck.Nick(request.Nick) || _playerService.IsUsernameExist(username))
+            if (InputValidationCheck.Nick(request.Nick) && !_playerService.IsUsernameExist(username))
             {
                 if (_playerService.IsNickAvailable(request.Nick))
                 {
@@ -37,7 +37,7 @@ namespace Server.Services
                 }
                 else
                 {
-                    status = "exist";
+                    status = "nick_exist";
                 }
             }
 
