@@ -11,16 +11,16 @@ namespace Server.Services.Dao
 
         protected override string CollectionName => "player";
 
-        public bool IsNickAvailable(string nick)
+        public bool ExistsByNick(string nick)
         {
-            return GetCollection().Find(player => player.Nick == nick).Project(player => player.Id).FirstOrDefault() == null;
+            return GetCollection().Find(player => player.Nick == nick).Project(player => player.Id).FirstOrDefault() != null;
         }
-        public bool IsUsernameExist(string username)
+        public bool ExistsByUsername(string username)
         {
             return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault() != null;
         }
 
-        public Player GetPlayer(string username)
+        public Player GetByUsername(string username)
         {
             return GetCollection().Find(player => player.Username == username).FirstOrDefault();
         }

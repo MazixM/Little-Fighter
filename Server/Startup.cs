@@ -59,7 +59,7 @@ namespace Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<PlayerManagerService>().RequireCors("AllowAll");
+                endpoints.MapGrpcService<PlayerController>().RequireCors("AllowAll");
             });
         }
 

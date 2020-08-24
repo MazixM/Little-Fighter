@@ -5,6 +5,7 @@
     <span class="text-nowrap">
         @Text
     </span>
+    <span style="color:forestgreen">~@Author</span>
 </div>
 
 @code {
@@ -13,4 +14,6 @@
     public string Title { get; set; }
     [Parameter]
     public string Text { get; set; }
+    [Parameter]
+    public string Author { get; set; }
 }

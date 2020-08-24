@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package playerManager;
+package PlayerControllerProto;
 
-service PlayerManager {
+service PlayerController {
   rpc CreatePlayer (CreateRequest) returns (CreateReply);
   rpc CheckPlayer (CheckRequest) returns (CheckReply);
   //rpc DeletePlayer (CreateRequest) returns (Reply);

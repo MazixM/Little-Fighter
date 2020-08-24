@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\playerManager.proto" />
+    <None Remove="Protos\playerController.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\playerManager.proto" />
+    <Protobuf Include="Protos\PlayerController.proto" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using Server.Services.Dao;
 using Server.Services.Model;
+using SolutionShared;
 
 namespace Server.Services
 {
@@ -14,25 +15,32 @@ namespace Server.Services
 
         public Player CreatePlayer(string nick, string username)
         {
-            Player player = new Player
+            if (InputValidationCheck.Nick(nick) && !IsUsernameExist(username) && IsNickAvailable(nick))
             {
-                Nick = nick,
-                Username = username
-            };
+                Player player = new Player
+                {
+                    Nick = nick,
+                    Username = username
+                };
 
-            return _playerDao.Insert(player);
+                return _playerDao.Insert(player);
+            }
+            else
+            {
+                return null;
+            }
         }
         public Player GetPlayer(string username)
         {
-            return _playerDao.GetPlayer(username);
+            return _playerDao.GetByUsername(username);
         }
         public bool IsNickAvailable(string nick)
         {
-            return _playerDao.IsNickAvailable(nick);
+            return !_playerDao.ExistsByNick(nick);
         }
         public bool IsUsernameExist(string username)
         {
-            return _playerDao.IsUsernameExist(username);
+            return _playerDao.ExistsByUsername(username);
         }
     }
 }

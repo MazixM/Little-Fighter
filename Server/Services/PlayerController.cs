@@ -2,21 +2,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using PlayerManager;
+using PlayerControllerProto;
 using Server.Services.Model;
-using SolutionShared;
 using System.Threading.Tasks;
 
 namespace Server.Services
 {
     [Authorize]
-    public class PlayerManagerService : PlayerManager.PlayerManager.PlayerManagerBase
+    public class PlayerController : PlayerControllerProto.PlayerController.PlayerControllerBase
     {
-        private readonly ILogger<PlayerManagerService> _logger;
+        private readonly ILogger<PlayerController> _logger;
         private readonly PlayerService _playerService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PlayerManagerService(ILogger<PlayerManagerService> logger, PlayerService playerService, IHttpContextAccessor httpContextAccessor)
+        public PlayerController(ILogger<PlayerController> logger, PlayerService playerService, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _playerService = playerService;
@@ -28,17 +27,13 @@ namespace Server.Services
             string username = _httpContextAccessor.HttpContext.User.FindFirst("preferred_username").Value;
             string status = null;
 
-            if (InputValidationCheck.Nick(request.Nick) && !_playerService.IsUsernameExist(username))
+            if (_playerService.CreatePlayer(request.Nick, username) != null)
             {
-                if (_playerService.IsNickAvailable(request.Nick))
-                {
-                    _playerService.CreatePlayer(request.Nick, username);
-                    status = "ok";
-                }
-                else
-                {
-                    status = "nick_exist";
-                }
+                status = "ok";
+            }
+            else
+            {
+                status = "nick_exist";
             }
 
             return Task.FromResult(new CreateReply
@@ -51,6 +46,7 @@ namespace Server.Services
             bool isUserHavePlayer = false;
             string username = _httpContextAccessor.HttpContext.User.FindFirst("preferred_username").Value;
             Player player = _playerService.GetPlayer(username);
+
             if (player != null)
             {
                 isUserHavePlayer = true;

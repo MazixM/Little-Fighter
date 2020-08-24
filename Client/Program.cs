@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static PlayerManager.PlayerManager;
+using static PlayerControllerProto.PlayerController;
 
 namespace Client
 {
@@ -29,7 +29,7 @@ namespace Client
                 var channel = GrpcChannel.ForAddress("https://localhost:5001",
                     new GrpcChannelOptions { HttpHandler = grpcWebHandler });
 
-                return new PlayerManagerClient(channel);
+                return new PlayerControllerClient(channel);
             });
 
             builder.Services.AddOidcAuthentication(options =>
