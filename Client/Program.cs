@@ -20,7 +20,6 @@ namespace Client
 
             builder.Services.AddScoped(sp =>
             {
-
                 var authorizationMessageHandler =
                     sp.GetRequiredService<GrpcAuthorizationMessageHandler>();
                 authorizationMessageHandler.InnerHandler = new HttpClientHandler();

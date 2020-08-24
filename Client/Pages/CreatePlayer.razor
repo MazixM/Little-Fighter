@@ -52,7 +52,7 @@
         var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
         if (reply.IsUserHavePlayer)
         {
-            errorMessage = "Już posiadasz JEDNĄ postać o nick-u: " + reply.Nick;
+            errorMessage = "Już posiadasz JEDNĄ postać.";
         }
         else
         {
