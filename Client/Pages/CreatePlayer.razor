@@ -1,7 +1,7 @@
 ﻿@page "/createPlayer"
-@using SolutionShared
-@inject PlayerControllerProto.PlayerController.PlayerControllerClient PlayerControllerClient
 @attribute [Authorize]
+
+<h3>Stwórz postać</h3>
 
 @code {
     private static string serverMessage;
@@ -40,7 +40,8 @@
         else if (reply.Status == "nick_exist")
         {
             serverMessage = "Podany nick już istnieje spróbuj inny.";
-        }else
+        }
+        else
         {
             serverMessage = "Nieznany błąd.";
         }
@@ -52,7 +53,7 @@
         var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
         if (reply.IsUserHavePlayer)
         {
-            errorMessage = "Już posiadasz JEDNĄ postać.";
+            Navigation.NavigateTo($"/");
         }
         else
         {

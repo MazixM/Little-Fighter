@@ -1,8 +1,54 @@
 ﻿@page "/settings"
 @attribute [Authorize]
+@inject PlayerControllerProto.PlayerController.PlayerControllerClient PlayerControllerClient
+@inject NavigationManager Navigation
 
 <h3>Ustawienia</h3>
 
 @code {
+    private static string serverMessage;
+    private static string errorMessage;
+    private bool isPanelHidden = true;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckPlayerAsync();
+    }
+    public async Task CheckPlayerAsync()
+    {
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        if (!reply.IsUserHavePlayer)
+        {
+            Navigation.NavigateTo($"/createPlayer");
+        }
+        else
+        {
+            isPanelHidden = false;
+        }
+    }
+    private async Task DeletePlayer()
+    {
+        await DeletePlayerAsync();
+    }
+    public async Task DeletePlayerAsync()
+    {
+        var reply = await PlayerControllerClient.DeletePlayerAsync(new PlayerControllerProto.DeleteRequest { });
+        if (reply.IsDeleted)
+        {
+            Navigation.NavigateTo($"/createPlayer");
+        }
+        else
+        {
+            errorMessage = "Błąd podczas usuwania";
+        }
+    }
 }
+
+<div id="deletePlayer" hidden="@isPanelHidden">
+    <p>
+        <b style="color:red">@errorMessage</b>
+    </p>
+    <br />
+    <p style="color:red;">UWAGA, TEJ OPERACJI NIE MOŻNA COFNĄĆ!</p>
+    <button class="btn btn-primary" @onclick="DeletePlayer">Usuń postać</button>
+</div>

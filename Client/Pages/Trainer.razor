@@ -1,7 +1,19 @@
 ﻿@page "/trainer"
 @attribute [Authorize]
 
-<h3>Trener</h3>
-
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckPlayerAsync();
+    }
+    public async Task CheckPlayerAsync()
+    {
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        if (!reply.IsUserHavePlayer)
+        {
+            Navigation.NavigateTo($"/createPlayer");
+        }
+    }
 }
+<h3>Trener</h3>
+TODO

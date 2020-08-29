@@ -17,12 +17,26 @@ namespace Server.Services.Dao
         }
         public bool ExistsByUsername(string username)
         {
-            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault() != null;
+            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault().HasValue;
         }
-
+        public bool DeletePlayerByUsername(string username)
+        {
+            if (GetCollection().DeleteOne(player => player.Username == username).DeletedCount > 0)
+            {
+                return true;
+            }
+            return false;
+        }
         public Player GetByUsername(string username)
         {
-            return GetCollection().Find(player => player.Username == username).FirstOrDefault();
+            if (ExistsByUsername(username))
+            {
+                return GetCollection().Find(player => player.Username == username).FirstOrDefault();
+            }
+            else
+            {
+                return new Player();
+            }
         }
     }
 }

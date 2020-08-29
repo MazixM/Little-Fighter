@@ -27,12 +27,16 @@ namespace Server.Services
             }
             else
             {
-                return null;
+                return new Player();
             }
         }
         public Player GetPlayer(string username)
         {
             return _playerDao.GetByUsername(username);
+        }
+        public bool DeletePlayer(string username)
+        {
+            return _playerDao.DeletePlayerByUsername(username);
         }
         public bool IsNickAvailable(string nick)
         {

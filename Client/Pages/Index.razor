@@ -1,5 +1,20 @@
 ﻿@page "/"
 
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckPlayerAsync();
+    }
+    public async Task CheckPlayerAsync()
+    {
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        if (!reply.IsUserHavePlayer)
+        {
+            Navigation.NavigateTo($"/createPlayer");
+        }
+    }
+}
 <h1>Witaj w świecie Little Fighter!</h1>
 
-<SurveyPrompt Title="22.08.2020" Text="Dodałem nowy sposób wyświetlania w zależności od tego, czy użytkownik jest zalogowany " Author="Mazix"/>
+<SurveyPrompt Title="22.08.2020" Text="Dodałem nowy sposób wyświetlania w zależności od tego, czy użytkownik jest zalogowany" Author="Mazix" />
+<SurveyPrompt Title="29.08.2020" Text="Dodałem możliwość usunięcia postaci" Author="Mazix" />

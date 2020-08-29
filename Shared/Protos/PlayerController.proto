@@ -5,7 +5,7 @@ package PlayerControllerProto;
 service PlayerController {
   rpc CreatePlayer (CreateRequest) returns (CreateReply);
   rpc CheckPlayer (CheckRequest) returns (CheckReply);
-  //rpc DeletePlayer (CreateRequest) returns (Reply);
+  rpc DeletePlayer (DeleteRequest) returns (DeleteReply);
 }
 
 message CreateRequest {
@@ -22,4 +22,11 @@ message CheckRequest {
 message CheckReply {
 	bool isUserHavePlayer = 1;
 	string nick = 2;
+}
+
+message DeleteRequest {
+}
+
+message DeleteReply {
+	bool isDeleted = 1;
 }
