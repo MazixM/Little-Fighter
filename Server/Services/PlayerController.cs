@@ -1,6 +1,5 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PlayerControllerProto;
 using Server.Services.Model;
@@ -13,21 +12,19 @@ namespace Server.Services
     {
         private readonly ILogger<PlayerController> _logger;
         private readonly PlayerService _playerService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly string _authUsername;
+        private readonly HttpContext _httpContext;
 
-        public PlayerController(ILogger<PlayerController> logger, PlayerService playerService, IHttpContextAccessor httpContextAccessor)
+        public PlayerController(ILogger<PlayerController> logger, PlayerService playerService, HttpContext httpContext)
         {
             _logger = logger;
             _playerService = playerService;
-            _httpContextAccessor = httpContextAccessor;
-            _authUsername = _httpContextAccessor.HttpContext.User.FindFirst("preferred_username").Value;
+            _httpContext = httpContext;
         }
         public override Task<CreateReply> CreatePlayer(CreateRequest request, ServerCallContext context)
         {
             string status = null;
 
-            if (_playerService.CreatePlayer(request.Nick, _authUsername).Id != null)
+            if (_playerService.CreatePlayer(request.Nick, _httpContext.GetUsername()).Id != null)
             {
                 status = "ok";
             }
@@ -44,7 +41,7 @@ namespace Server.Services
         public override Task<CheckReply> CheckPlayer(CheckRequest request, ServerCallContext context)
         {
             bool isUserHavePlayer = false;
-            Player player = _playerService.GetPlayer(_authUsername);
+            Player player = _playerService.GetPlayer(_httpContext.GetUsername());
 
             if (player.Id != null)
             {
@@ -59,13 +56,7 @@ namespace Server.Services
         }
         public override Task<DeleteReply> DeletePlayer(DeleteRequest request, ServerCallContext context)
         {
-            bool succes = false;
-            Player player = _playerService.GetPlayer(_authUsername);
-
-            if (player != null)
-            {
-                succes = _playerService.DeletePlayer(_authUsername);
-            }
+            bool succes = _playerService.DeletePlayer(_httpContext.GetUsername());
 
             return Task.FromResult(new DeleteReply
             {

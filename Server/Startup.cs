@@ -38,9 +38,10 @@ namespace Server
 
             services.AddHttpContextAccessor();
 
-            services.AddSingleton(getMongoDatabase());
+            services.AddSingleton(GetMongoDatabase());
             services.AddSingleton<PlayerDao>();
             services.AddSingleton<PlayerService>();
+            services.AddSingleton<HttpContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,7 +64,7 @@ namespace Server
             });
         }
 
-        private IMongoDatabase getMongoDatabase()
+        private IMongoDatabase GetMongoDatabase()
         {
             string host = EnvironmentUtils.GetEnvironmentVariable("MONGODB_HOST", "localhost");
             string port = EnvironmentUtils.GetEnvironmentVariable("MONGODB_PORT", "27017");

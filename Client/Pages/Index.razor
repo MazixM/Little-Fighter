@@ -1,10 +1,18 @@
 ﻿@page "/"
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-@code {
+@code{
+
     protected override async Task OnInitializedAsync()
     {
-        await CheckPlayerAsync();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            await CheckPlayerAsync();
+        }
     }
+
     public async Task CheckPlayerAsync()
     {
         var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
@@ -14,6 +22,8 @@
         }
     }
 }
+
+
 <h1>Witaj w świecie Little Fighter!</h1>
 
 <SurveyPrompt Title="22.08.2020" Text="Dodałem nowy sposób wyświetlania w zależności od tego, czy użytkownik jest zalogowany" Author="Mazix" />
