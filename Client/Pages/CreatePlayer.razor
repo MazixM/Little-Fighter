@@ -1,8 +1,6 @@
 ﻿@page "/createPlayer"
 @attribute [Authorize]
 
-<h3>Stwórz postać</h3>
-
 @code {
     private static string serverMessage;
     private static string errorMessage;
@@ -13,7 +11,6 @@
     {
         await CheckPlayerAsync();
     }
-
     private async Task TryCreatePlayer()
     {
         ClearText();
@@ -27,15 +24,14 @@
             errorMessage = "Podaj nick [4-20]";
         }
     }
-
-    public async Task CreatePlayerAsync()
+    private async Task CreatePlayerAsync()
     {
-        ClearText();
         var reply = await PlayerControllerClient.CreatePlayerAsync(new PlayerControllerProto.CreateRequest { Nick = nick });
         if (reply.Status == "ok")
         {
             serverMessage = "Postać została uworzona.";
             isRegisterHidden = true;
+            Navigation.NavigateTo($"/player");
         }
         else if (reply.Status == "nick_exist")
         {
@@ -46,11 +42,10 @@
             serverMessage = "Nieznany błąd.";
         }
     }
-
     public async Task CheckPlayerAsync()
     {
         ClearText();
-        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.EmptyRequest { });
         if (reply.IsUserHavePlayer)
         {
             Navigation.NavigateTo($"/");
@@ -66,6 +61,8 @@
         errorMessage = "";
     }
 }
+
+<h3>Stwórz postać</h3>
 <p>
     <b style="color:red">@errorMessage</b>
 </p>

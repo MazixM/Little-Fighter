@@ -22,7 +22,7 @@ namespace Server.Services
         }
         public override Task<CreateReply> CreatePlayer(CreateRequest request, ServerCallContext context)
         {
-            string status = null;
+            string status;
 
             if (_playerService.CreatePlayer(request.Nick, _httpContext.GetUsername()).Id != null)
             {
@@ -38,7 +38,7 @@ namespace Server.Services
                 Status = status ?? "error"
             });
         }
-        public override Task<CheckReply> CheckPlayer(CheckRequest request, ServerCallContext context)
+        public override Task<CheckReply> CheckPlayer(EmptyRequest request, ServerCallContext context)
         {
             bool isUserHavePlayer = false;
             Player player = _playerService.GetPlayer(_httpContext.GetUsername());
@@ -54,13 +54,26 @@ namespace Server.Services
                 Nick = player.Nick ?? ""
             });
         }
-        public override Task<DeleteReply> DeletePlayer(DeleteRequest request, ServerCallContext context)
+        public override Task<DeleteReply> DeletePlayer(EmptyRequest request, ServerCallContext context)
         {
             bool succes = _playerService.DeletePlayer(_httpContext.GetUsername());
 
             return Task.FromResult(new DeleteReply
             {
                 IsDeleted = succes
+            });
+        }
+        public override Task<GetPlayerReply> GetPlayer(EmptyRequest request, ServerCallContext context)
+        {
+            Player player = _playerService.GetPlayer(_httpContext.GetUsername());
+            return Task.FromResult(new GetPlayerReply
+            {
+                Nick = player.Nick,
+                Level = player.Level,
+                Exp = player.Exp,
+                ExpMax = player.ExpMax,
+                Energy = player.Energy,
+                EnergyMax = player.EnergyMax
             });
         }
     }

@@ -6,7 +6,6 @@
 <h3>Ustawienia</h3>
 
 @code {
-    private static string serverMessage;
     private static string errorMessage;
     private bool isPanelHidden = true;
 
@@ -16,7 +15,7 @@
     }
     public async Task CheckPlayerAsync()
     {
-        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.EmptyRequest { });
         if (!reply.IsUserHavePlayer)
         {
             Navigation.NavigateTo($"/createPlayer");
@@ -32,7 +31,7 @@
     }
     public async Task DeletePlayerAsync()
     {
-        var reply = await PlayerControllerClient.DeletePlayerAsync(new PlayerControllerProto.DeleteRequest { });
+        var reply = await PlayerControllerClient.DeletePlayerAsync(new PlayerControllerProto.EmptyRequest { });
         if (reply.IsDeleted)
         {
             Navigation.NavigateTo($"/createPlayer");

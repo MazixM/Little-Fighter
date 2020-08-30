@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using Server.Services.Model;
+using System;
 
 namespace Server.Services.Dao
 {
@@ -17,7 +18,17 @@ namespace Server.Services.Dao
         }
         public bool ExistsByUsername(string username)
         {
-            return GetCollection().Find(player => player.Username == username).Project(player => player.Id).FirstOrDefault().HasValue;
+            try
+            {
+                //TODO - Nie mam pomysłu na to, jak nie ma takiego rekordu, to dostaje Exeption "Server sent an invalid nonce."
+                return GetCollection().Find(player => player.Username == username).Project(player => player.Id).Any();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+                return false;
+            }
         }
         public bool DeletePlayerByUsername(string username)
         {

@@ -1,0 +1,62 @@
+﻿@page "/player"
+@attribute [Authorize]
+<h3>Twoja postać</h3>
+<div id="main" hidden="@isMainDivHidden">
+    <table>
+        <tr>
+            <td>Nick:</td>
+            <td>@nick</td>
+        </tr>
+        <tr>
+            <td>Level:</td>
+            <td>@level</td>
+        </tr>
+        <tr>
+            <td>Exp:</td>
+            <td>@exp / @expMax</td>
+        </tr>
+        <tr>
+            <td>Energia:</td>
+            <td>@energy / @energyMax</td>
+        </tr>
+    </table>
+</div>
+@code{
+    private bool isMainDivHidden = true;
+    private string nick;
+    private int level;
+    private int exp;
+    private int expMax;
+    private int energy;
+    private int energyMax;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            await CheckPlayerAsync();
+        }
+    }
+
+    public async Task CheckPlayerAsync()
+    {
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.EmptyRequest { });
+        if (!reply.IsUserHavePlayer)
+        {
+            Navigation.NavigateTo($"/createPlayer");
+        }
+        else
+        {
+            var player = await PlayerControllerClient.GetPlayerAsync(new PlayerControllerProto.EmptyRequest { });
+            nick = player.Nick;
+            level = player.Level;
+            exp = player.Exp;
+            expMax = player.ExpMax;
+            energy = player.Energy;
+            energyMax = player.EnergyMax;
+            isMainDivHidden = false;
+        }
+    }
+}

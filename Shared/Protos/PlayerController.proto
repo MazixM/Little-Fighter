@@ -4,8 +4,12 @@ package PlayerControllerProto;
 
 service PlayerController {
   rpc CreatePlayer (CreateRequest) returns (CreateReply);
-  rpc CheckPlayer (CheckRequest) returns (CheckReply);
-  rpc DeletePlayer (DeleteRequest) returns (DeleteReply);
+  rpc CheckPlayer (EmptyRequest) returns (CheckReply);
+  rpc DeletePlayer (EmptyRequest) returns (DeleteReply);
+  rpc GetPlayer (EmptyRequest) returns (GetPlayerReply);
+}
+
+message EmptyRequest {
 }
 
 message CreateRequest {
@@ -16,17 +20,20 @@ message CreateReply {
   string status = 1;
 }
 
-message CheckRequest {
-}
-
 message CheckReply {
 	bool isUserHavePlayer = 1;
 	string nick = 2;
 }
 
-message DeleteRequest {
-}
-
 message DeleteReply {
 	bool isDeleted = 1;
+}
+
+message GetPlayerReply {
+	string nick=1;
+	int32 level=2;
+	int32 exp=3;
+	int32 expMax=4;
+	int32 energy=5;
+	int32 energyMax=6;
 }

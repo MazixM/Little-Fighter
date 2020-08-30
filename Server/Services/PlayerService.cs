@@ -20,7 +20,12 @@ namespace Server.Services
                 Player player = new Player
                 {
                     Nick = nick,
-                    Username = username
+                    Username = username,
+                    Level = 1,
+                    Exp = 0,
+                    ExpMax = 10,
+                    Energy = 10,
+                    EnergyMax = 10
                 };
 
                 return _playerDao.Insert(player);

@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code{
 
@@ -15,7 +14,7 @@
 
     public async Task CheckPlayerAsync()
     {
-        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.CheckRequest { });
+        var reply = await PlayerControllerClient.CheckPlayerAsync(new PlayerControllerProto.EmptyRequest { });
         if (!reply.IsUserHavePlayer)
         {
             Navigation.NavigateTo($"/createPlayer");
