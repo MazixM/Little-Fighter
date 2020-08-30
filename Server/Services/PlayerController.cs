@@ -66,14 +66,20 @@ namespace Server.Services
         public override Task<GetPlayerReply> GetPlayer(EmptyRequest request, ServerCallContext context)
         {
             Player player = _playerService.GetPlayer(_httpContext.GetUsername());
+
             return Task.FromResult(new GetPlayerReply
             {
                 Nick = player.Nick,
                 Level = player.Level,
+                Gold = player.Gold,
                 Exp = player.Exp,
                 ExpMax = player.ExpMax,
                 Energy = player.Energy,
-                EnergyMax = player.EnergyMax
+                EnergyMax = player.EnergyMax,
+                Hp = player.Hp,
+                HpMax = player.HpMax,
+                Mana = player.Mana,
+                ManaMax = player.ManaMax
             });
         }
     }

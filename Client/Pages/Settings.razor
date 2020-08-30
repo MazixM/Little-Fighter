@@ -3,8 +3,6 @@
 @inject PlayerControllerProto.PlayerController.PlayerControllerClient PlayerControllerClient
 @inject NavigationManager Navigation
 
-<h3>Ustawienia</h3>
-
 @code {
     private static string errorMessage;
     private bool isPanelHidden = true;
@@ -43,6 +41,7 @@
     }
 }
 
+<h3>Ustawienia</h3>
 <div id="deletePlayer" hidden="@isPanelHidden">
     <p>
         <b style="color:red">@errorMessage</b>

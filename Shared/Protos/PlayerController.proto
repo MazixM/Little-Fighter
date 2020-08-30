@@ -36,4 +36,15 @@ message GetPlayerReply {
 	int32 expMax=4;
 	int32 energy=5;
 	int32 energyMax=6;
+	int32 hp=7;
+	int32 hpMax=8;
+	int32 mana=9;
+	int32 manaMax=10;
+	int32 gold=11;
+	int32 Strength=12;
+	int32 Durability=13;
+	int32 Dexterity=14;
+	int32 Intelligence=15;
+	int32 Concentration=16;
+	int32 Luck=17;
 }

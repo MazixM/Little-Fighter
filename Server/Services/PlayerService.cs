@@ -21,11 +21,21 @@ namespace Server.Services
                 {
                     Nick = nick,
                     Username = username,
+                    Gold = 100,
                     Level = 1,
+                    Hp = 10,
+                    Mana = 10,
+                    ManaMax = 10,
                     Exp = 0,
                     ExpMax = 10,
                     Energy = 10,
-                    EnergyMax = 10
+                    EnergyMax = 10,
+                    Strength = 1,
+                    Dexterity = 1,
+                    Durability = 1,
+                    Intelligence = 1,
+                    Concentration =1,
+                    Luck = 1
                 };
 
                 return _playerDao.Insert(player);

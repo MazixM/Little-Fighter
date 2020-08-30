@@ -1,34 +1,19 @@
 ﻿@page "/player"
 @attribute [Authorize]
-<h3>Twoja postać</h3>
-<div id="main" hidden="@isMainDivHidden">
-    <table>
-        <tr>
-            <td>Nick:</td>
-            <td>@nick</td>
-        </tr>
-        <tr>
-            <td>Level:</td>
-            <td>@level</td>
-        </tr>
-        <tr>
-            <td>Exp:</td>
-            <td>@exp / @expMax</td>
-        </tr>
-        <tr>
-            <td>Energia:</td>
-            <td>@energy / @energyMax</td>
-        </tr>
-    </table>
-</div>
+
 @code{
     private bool isMainDivHidden = true;
     private string nick;
+    private int gold;
     private int level;
     private int exp;
     private int expMax;
     private int energy;
     private int energyMax;
+    private int hp;
+    private int hpMax;
+    private int mana;
+    private int manaMax;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,7 +41,49 @@
             expMax = player.ExpMax;
             energy = player.Energy;
             energyMax = player.EnergyMax;
+            hp = player.Hp;
+            hpMax = player.HpMax;
+            mana = player.Mana;
+            manaMax = player.ManaMax;
+            gold = player.Gold;
             isMainDivHidden = false;
         }
     }
 }
+
+<style>
+    table, tr {
+        border: 1px solid black;
+        text-align:center;
+    }
+    td:nth-child(2){
+        border-right:1px solid black;
+    }
+</style>
+
+<h3>Twoja postać</h3>
+<div id="main" hidden="@isMainDivHidden">
+    <table>
+        <tr>
+            <td>Nick:</td>
+            <td>@nick</td>
+            <td>Level:</td>
+            <td>@level</td>
+        </tr>
+        <tr>
+            <td>Exp:</td>
+            <td>@exp / @expMax</td>
+            <td>Energia:</td>
+            <td>@energy / @energyMax</td>
+        </tr>
+        <tr>
+            <td>Życie:</td>
+            <td>@hp / @hpMax</td>
+            <td>Mana:</td>
+            <td>@mana / @manaMax</td>
+        </tr>
+        <tr>
+            <td colspan="4">Złoto:@gold złota</td>
+        </tr>
+    </table>
+</div>
